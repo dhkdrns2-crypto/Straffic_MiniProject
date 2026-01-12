@@ -532,8 +532,7 @@
             </div>
         </div>
 
-        <!-- Quick Menu -->
-        <div class="quick-menu">
+        <div class="quick-menu" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" sec:authorize="!hasRole('ADMIN')">
             <a href="#" class="quick-item">
                 <div class="quick-icon"><span class="material-symbols-outlined">train</span></div>
                 <div class="quick-text">KTX 예약</div>
@@ -547,12 +546,31 @@
                 <div class="quick-text">주차장 정보</div>
             </a>
             <a href="#" class="quick-item">
+                <div class="quick-icon"><span class="material-symbols-outlined">directions_subway</span></div>
+                <div class="quick-text">지하철 정보</div>
+            </a>
+            <a href="#" class="quick-item">
+                <div class="quick-icon"><span class="material-symbols-outlined">forum</span></div>
+                <div class="quick-text">계시판</div>
+            </a>
+            <a href="#" class="quick-item">
+                <div class="quick-icon"><span class="material-symbols-outlined">confirmation_number</span></div>
+                <div class="quick-text">쿠폰함</div>
+            </a>
+        </div>
+
+        <div class="quick-menu" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" sec:authorize="hasRole('ADMIN')">
+            <a href="#" class="quick-item">
                 <div class="quick-icon"><span class="material-symbols-outlined">security</span></div>
                 <div class="quick-text">보안센터</div>
             </a>
             <a href="#" class="quick-item">
-                <div class="quick-icon"><span class="material-symbols-outlined">support_agent</span></div>
-                <div class="quick-text">고객센터</div>
+                <div class="quick-icon"><span class="material-symbols-outlined">dashboard</span></div>
+                <div class="quick-text">대시보드</div>
+            </a>
+            <a href="#" class="quick-item">
+                <div class="quick-icon"><span class="material-symbols-outlined">forum</span></div>
+                <div class="quick-text">계시판</div>
             </a>
         </div>
 
