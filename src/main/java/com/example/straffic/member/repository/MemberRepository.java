@@ -22,17 +22,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     List<MemberServiceInterface> result();
 
     @Query(value = """
-               select id, name, tel 
-              from mem1213 """, nativeQuery = true)
-    Page<MemberServiceInterface> result1(Pageable pageable);
-
-    @Query(value = """
-select * 
-from mem1213
-""", nativeQuery = true)
-    List<MemberServiceInterface> interout3();
-
-    @Query(value = """
 select * 
 from mem1213
 """, nativeQuery = true)

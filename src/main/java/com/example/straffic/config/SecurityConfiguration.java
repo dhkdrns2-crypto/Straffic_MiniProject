@@ -59,12 +59,7 @@ public class SecurityConfiguration {
                         .loginProcessingUrl("/loginProcess")
                         .usernameParameter("id")
                         .passwordParameter("pw")
-                        .successHandler((request, response, authentication) -> {
-                            boolean isAdmin = authentication.getAuthorities()
-                                    .stream()
-                                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-                            response.sendRedirect(isAdmin ? "/memberOut2" : "/");
-                        })
+                        .defaultSuccessUrl("/", false)
                         .failureHandler(new AuthenticationFailureHandler() {
                             @Override
                             public void onAuthenticationFailure(HttpServletRequest request,

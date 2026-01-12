@@ -19,9 +19,5 @@ public interface MemberService {
 
     Page<MemberEntity> entitypage(int page);
 
-    List<MemberServiceInterface> interout2();
-
-    Page<MemberServiceInterface> interpage2(int page);
-
     long count();
 }

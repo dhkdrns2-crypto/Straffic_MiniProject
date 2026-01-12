@@ -26,13 +26,4 @@ public class MemberReadController {
         mo.addAttribute("totalPage", totalPage);
         return "/member/memberOut";
     }
-
-    @GetMapping("/memberOut2")
-    public String memberOut2(Model mo, @RequestParam(name = "page", defaultValue = "0", value = "page") int page) {
-        Page<MemberServiceInterface> listpage = memberService.interpage2(page);
-        mo.addAttribute("nowPage", listpage.getNumber() + 1);
-        mo.addAttribute("list", listpage.getContent());
-        mo.addAttribute("totalPage", listpage.getTotalPages());
-        return "/member/memberPageOut";
-    }
 }

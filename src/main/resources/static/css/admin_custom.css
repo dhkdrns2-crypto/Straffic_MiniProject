@@ -1,0 +1,12 @@
+
+/* Admin Login Box Customization */
+.admin-login-box {
+    font-size: 16px !important; /* Larger text */
+    padding: 8px 14px !important; /* Larger padding */
+    background-color: rgba(255, 255, 255, 0.15); /* Distinct background */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.admin-login-box .material-symbols-outlined {
+    font-size: 24px !important; /* Larger icon */
+}

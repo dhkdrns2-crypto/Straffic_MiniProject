@@ -51,16 +51,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<MemberServiceInterface> interout2() {
-        return memberRepository.interout3();
-    }
-
-    @Override
-    public Page<MemberServiceInterface> interpage2(int page) {
-        return memberRepository.result1(PageRequest.of(page, 3));
-    }
-
-    @Override
     public long count() {
         return memberRepository.count();
     }

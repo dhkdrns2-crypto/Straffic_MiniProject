@@ -33,7 +33,7 @@
 
             <!-- Authenticated -->
             <li sec:authorize="isAuthenticated()">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" th:classappend="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} ? 'admin-login-box'">
                     <span class="material-symbols-outlined">account_circle</span>
                     <span th:if="${#authentication.principal instanceof T(com.example.straffic.oauth.PrincipalOauth2UserService.CustomOAuth2User)}"
                           th:text="${#authentication.principal.realName} + '님'">User님</span>
