@@ -67,7 +67,6 @@
 
     <div class="notice-header">
         <h1 style="margin: 0;">공지사항</h1>
-        <a sec:authorize="hasRole('ADMIN')" href="/notice/admin/create" class="btn-write">공지 작성</a>
     </div>
 
     <div class="notice-tools">
@@ -80,6 +79,7 @@
             <input type="text" name="q" placeholder="검색어를 입력하세요." th:value="${q}">
             <button type="submit" class="btn-write" style="padding:8px 14px;">검색</button>
         </form>
+        <a sec:authorize="hasRole('ADMIN')" href="/notice/admin/create" class="btn-write">공지 작성</a>
     </div>
 
     <div class="noticeList">

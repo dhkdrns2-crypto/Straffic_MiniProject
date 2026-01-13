@@ -55,6 +55,7 @@ public class SecurityConfiguration {
                                 "/image/**", "/css/**", "/js/**"
                         ).permitAll()
                         .requestMatchers("/notice/list", "/notice/view/**", "/notice/image/**").permitAll()
+                        .requestMatchers("/board/list", "/board/view/**", "/board/image/**").permitAll()
                         .requestMatchers("/notice/admin/**").hasRole("ADMIN")
                         .requestMatchers("/memberOut**").authenticated()
                         .anyRequest().authenticated()
