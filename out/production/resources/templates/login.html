@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/login_custom.css}">
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.querySelector('.password-toggle');
+            const passwordInput = document.querySelector('#pw');
+
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    
+                    // Toggle icon text
+                    this.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+                });
+            }
+        });
+    </script>
+</th:block>
+
+<div layout:fragment="content">
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="auth-title">로그인</div>
+            
+            <div th:if="${param.error}" class="alert-error">
+                사용자 이름 및 암호가 잘못되었습니다.
+            </div>
+            <div th:if="${param.logout}" class="alert-info">
+                로그아웃 되었습니다.
+            </div>
+
+            <form th:action="@{/loginProcess}" method="post" class="login-form">
+                <div class="input-group">
+                    <input type="text" class="modern-input" id="id" name="id" placeholder="이메일을 입력하세요" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" class="modern-input" id="pw" name="pw" placeholder="비밀번호를 입력하세요" required>
+                    <span class="password-toggle material-symbols-outlined">visibility</span>
+                </div>
+                
+                <div class="login-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="remember-me">
+                        <span class="custom-checkmark"></span>
+                        <span class="checkbox-label">로그인 유지</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-black-login">이메일로 로그인</button>
+                
+                <div class="sub-links">
+                    <a th:href="@{/memberInput}">회원가입</a>
+                </div>
+                
+                <div class="social-divider">
+                    <span>간편로그인</span>
+                </div>
+                
+                <div class="social-buttons">
+                    <a href="/oauth2/authorization/google" class="social-btn" title="Google Login">
+                        <img th:src="@{/image/google.png}" alt="Google">
+                    </a>
+                    <a href="/oauth2/authorization/naver" class="social-btn" title="Naver Login">
+                        <img th:src="@{/image/naver.png}" alt="Naver">
+                    </a>
+                    <a href="/oauth2/authorization/kakao" class="social-btn" title="Kakao Login">
+                        <img th:src="@{/image/kakao.png}" alt="Kakao">
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

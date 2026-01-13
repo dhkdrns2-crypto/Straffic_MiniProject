@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <style>
+        .noticeList table { width: 100%; border-collapse: collapse; background: white; }
+        .noticeList th, .noticeList td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+        .noticeList thead th { background: #f7f7f7; font-weight: 700; }
+        .noticeList .cate { width: 120px; color: #6a1b9a; font-weight: 700; }
+        .noticeList .tit a { color: #333; text-decoration: none; }
+        .noticeList .tit a:hover { text-decoration: underline; }
+        .noticeList .date { width: 140px; color: #777; }
+        .noticeList .count { width: 100px; color: #777; text-align: right; }
+        .notice-tools { display: flex; gap: 10px; margin: 14px 0 18px; }
+        .notice-tools input, .notice-tools select { padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .pagination { margin-top: 18px; display: flex; gap: 6px; }
+        .pagination a, .pagination span { padding: 8px 12px; border: 1px solid #eee; border-radius: 6px; background: #fff; color: #333; text-decoration: none; }
+        .pagination strong { background: #333; color: #fff; border-color: #333; border-radius: 6px; padding: 8px 12px; }
+        .notice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .btn-write { padding: 8px 14px; background: #333; color: #fff; border-radius: 6px; text-decoration: none; }
+        .btn-write:hover { background: #000; }
+    </style>
+
+    <div class="notice-header">
+        <h1 style="margin: 0;">공지사항</h1>
+        <a sec:authorize="hasRole('ADMIN')" href="/notice/admin/create" class="btn-write">공지 작성</a>
+    </div>
+
+    <div class="notice-tools">
+        <form th:action="@{/notice/list}" method="get" style="display:flex; gap:10px;">
+            <select name="tag">
+                <option value="" th:selected="${tag == null or tag == ''}">전체</option>
+                <option value="#공지" th:selected="${tag == '#공지'}">#공지</option>
+                <option value="#이벤트" th:selected="${tag == '#이벤트'}">#이벤트</option>
+            </select>
+            <input type="text" name="q" placeholder="검색어를 입력하세요." th:value="${q}">
+            <button type="submit" class="btn-write" style="padding:8px 14px;">검색</button>
+        </form>
+    </div>
+
+    <div class="noticeList">
+        <table>
+            <colgroup>
+                <col class="cate">
+                <col class="tit">
+                <col class="date">
+                <col class="count">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="cate">카테고리</th>
+                <th class="tit">제목</th>
+                <th class="date">등록일</th>
+                <th class="count">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="n : ${notices.getContent()}">
+                <td class="cate" th:text="${n.tag}">[공지]</td>
+                <td class="tit">
+                    <a th:href="@{/notice/view/{id}(id=${n.id})}">
+                        <span th:if="${n.pinned}" style="color:#e53935; font-weight:700;">[상단]</span>
+                        <span th:text="${n.title}">제목</span>
+                    </a>
+                </td>
+                <td class="date" th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd')}">2026-01-01</td>
+                <td class="count" th:text="${n.views}">0</td>
+            </tr>
+            <tr th:if="${notices.totalElements == 0}">
+                <td colspan="4" style="text-align:center; color:#777;">등록된 공지사항이 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" th:if="${notices.totalPages > 0}">
+        <a th:href="@{/notice/list(page=0, q=${q}, tag=${tag})}">처음</a>
+        <a th:if="${notices.number > 0}" th:href="@{/notice/list(page=${notices.number - 1}, q=${q}, tag=${tag})}">이전</a>
+        <span class="paginationNum">
+            <strong><span th:text="${notices.number + 1}">1</span></strong>
+            <a th:each="i : ${#numbers.sequence(0, notices.totalPages - 1)}"
+               th:if="${i != notices.number}"
+               th:href="@{/notice/list(page=${i}, q=${q}, tag=${tag})}"
+               th:text="${i + 1}">2</a>
+        </span>
+        <a th:if="${notices.number + 1 < notices.totalPages}" th:href="@{/notice/list(page=${notices.number + 1}, q=${q}, tag=${tag})}">다음</a>
+        <a th:href="@{/notice/list(page=${notices.totalPages - 1}, q=${q}, tag=${tag})}">끝</a>
+    </div>
+</div>
+</body>
+</html>

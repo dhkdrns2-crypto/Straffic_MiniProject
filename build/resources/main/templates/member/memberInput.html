@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/login_custom.css}">
+</th:block>
+
+<div layout:fragment="content">
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="auth-title">회원가입</div>
+
+            <form th:action="@{/memInsert}" method="post" th:object="${memberDTO}" class="login-form">
+                
+                <div class="input-group">
+                    <input type="text" class="modern-input" id="id" th:field="*{id}" placeholder="아이디" required>
+                    <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="alert-error" style="margin-top: 5px; padding: 5px; font-size: 12px; margin-bottom: 0; background: none; text-align: left;"></p>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" class="modern-input" id="pw" name="pw" placeholder="비밀번호" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" class="modern-input" id="name" name="name" placeholder="이름" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" class="modern-input" id="tel" name="tel" placeholder="전화번호" required>
+                </div>
+
+                <button type="submit" class="btn-black-login">가입하기</button>
+                
+                <div class="sub-links">
+                    <a th:href="@{/login}">이미 계정이 있으신가요? 로그인</a>
+                </div>
+                
+                <div class="social-divider">
+                    <span>간편 회원가입</span>
+                </div>
+                
+                <div class="social-buttons">
+                    <a href="/oauth2/authorization/google" class="social-btn" title="Google Login">
+                        <img th:src="@{/image/google.png}" alt="Google">
+                    </a>
+                    <a href="/oauth2/authorization/naver" class="social-btn" title="Naver Login">
+                        <img th:src="@{/image/naver.png}" alt="Naver">
+                    </a>
+                    <a href="/oauth2/authorization/kakao" class="social-btn" title="Kakao Login">
+                        <img th:src="@{/image/kakao.png}" alt="Kakao">
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

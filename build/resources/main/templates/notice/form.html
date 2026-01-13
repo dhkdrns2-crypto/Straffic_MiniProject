@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <style>
+        .notice-form-wrapper { background: white; padding: 24px; border-radius: 12px; max-width: 800px; margin: 0 auto; }
+        .notice-form-wrapper h1 { font-size: 1.4rem; margin-bottom: 20px; }
+        .notice-form { display: flex; flex-direction: column; gap: 14px; }
+        .notice-form label { font-weight: 600; margin-bottom: 4px; display: block; }
+        .notice-form input[type="text"],
+        .notice-form select,
+        .notice-form textarea { width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid #ddd; }
+        .notice-form textarea { min-height: 200px; resize: vertical; }
+        .notice-form .row-inline { display: flex; gap: 16px; align-items: center; }
+        .notice-form .row-inline > div { flex: 1; }
+        .notice-form .actions { margin-top: 16px; display: flex; gap: 10px; }
+        .btn-primary { padding: 8px 16px; border-radius: 6px; background: #333; color: #fff; border: none; cursor: pointer; }
+        .btn-primary:hover { background: #000; }
+        .btn-secondary { padding: 8px 16px; border-radius: 6px; background: #eee; color: #333; text-decoration: none; border: 1px solid #ddd; }
+        .btn-secondary:hover { background: #e0e0e0; }
+    </style>
+
+    <div class="notice-form-wrapper" sec:authorize="hasRole('ADMIN')">
+        <h1 th:text="${mode == 'edit'} ? '공지 수정' : '공지 등록'">공지 등록</h1>
+
+        <form th:if="${mode == 'create'}"
+              class="notice-form"
+              th:action="@{/notice/admin/create}"
+              method="post"
+              enctype="multipart/form-data">
+            <div>
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="row-inline">
+                <div>
+                    <label for="tag">태그</label>
+                    <select id="tag" name="tag" required>
+                        <option value="#공지">#공지</option>
+                        <option value="#이벤트">#이벤트</option>
+                    </select>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="pinned">
+                        상단 고정
+                    </label>
+                </div>
+            </div>
+            <div>
+                <label for="content">내용</label>
+                <textarea id="content" name="content" required></textarea>
+            </div>
+            <div>
+                <label for="image">이미지 업로드</label>
+                <input type="file" id="image" name="image">
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn-primary">등록</button>
+                <a href="/notice/list" class="btn-secondary">목록</a>
+            </div>
+        </form>
+
+        <form th:if="${mode == 'edit'}"
+              class="notice-form"
+              th:action="@{/notice/admin/update/{id}(id=${notice.id})}"
+              method="post"
+              enctype="multipart/form-data">
+            <div>
+                <label for="titleEdit">제목</label>
+                <input type="text" id="titleEdit" name="title" th:value="${notice.title}" required>
+            </div>
+            <div class="row-inline">
+                <div>
+                    <label for="tagEdit">태그</label>
+                    <select id="tagEdit" name="tag" required>
+                        <option value="#공지" th:selected="${notice.tag == '#공지'}">#공지</option>
+                        <option value="#이벤트" th:selected="${notice.tag == '#이벤트'}">#이벤트</option>
+                    </select>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="pinned" th:checked="${notice.pinned}">
+                        상단 고정
+                    </label>
+                </div>
+            </div>
+            <div>
+                <label for="contentEdit">내용</label>
+                <textarea id="contentEdit" name="content" th:text="${notice.content}" required></textarea>
+            </div>
+            <div>
+                <label for="imageEdit">이미지 업로드 (등록 시 기존 이미지 교체)</label>
+                <input type="file" id="imageEdit" name="image">
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn-primary">수정</button>
+                <a th:href="@{/notice/view/{id}(id=${notice.id})}" class="btn-secondary">취소</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

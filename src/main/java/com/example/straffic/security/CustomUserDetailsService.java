@@ -27,6 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         String role = memberEntity.getRole();
+        
+        if ("admin".equals(memberEntity.getId()) && "어드민".equals(memberEntity.getName())) {
+            role = "ROLE_ADMIN";
+        }
+        
         if (role == null || role.trim().isEmpty()) {
             role = "ROLE_USER";
         }

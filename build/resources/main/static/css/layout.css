@@ -1,0 +1,532 @@
+/* Modern Reset & Base */
+:root {
+    /* White/Gray Theme Palette */
+    --primary-color: #333333; /* Dark Gray */
+    --primary-hover: #000000; /* Black */
+    --secondary-color: #666666; /* Medium Gray */
+    --bg-color: #f5f5f5; /* Light Gray Background */
+    --card-bg: #ffffff; /* White Cards */
+    --white: #ffffff;
+    --border-color: #e0e0e0; /* Light Gray Border */
+    --text-main: #333333; /* Dark Gray Text */
+    --text-light: #666666; /* Medium Gray Text */
+    --accent-black: #222222; /* Black Accent */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --radius-md: 12px;
+    --radius-lg: 20px;
+}
+
+html {
+    overflow-y: scroll; /* Force vertical scrollbar to prevent layout shift */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Add a semi-transparent overlay to improve readability over background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(245, 245, 245, 0.85); /* Light Gray Overlay */
+    z-index: -2; /* Behind decorations */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Layout Structure */
+.layout-body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-header {
+    background-color: transparent;
+    box-shadow: none;
+    z-index: 1000;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-header h1 {
+    margin: 0;
+    padding: 20px 0;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--accent-black);
+    text-align: center;
+    letter-spacing: -0.5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.layout-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 150px 20px 40px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.layout-footer {
+    background: #222222; /* Dark footer */
+    color: #888;
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: auto;
+    font-size: 14px;
+}
+
+.layout-footer p {
+    margin: 5px 0;
+}
+
+/* Button Styles */
+.btn-primary-modern {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-modern:hover {
+    background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.btn-success-modern {
+    background: linear-gradient(135deg, #2d2d2d, #000000);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success-modern:hover {
+    background: linear-gradient(135deg, #000000, #2d2d2d);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.btn-kakao {
+    background-color: #FEE500;
+    color: #000000;
+    box-shadow: 0 4px 15px rgba(254, 229, 0, 0.3);
+}
+
+.btn-kakao:hover {
+    background-color: #fdd835;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254, 229, 0, 0.4);
+    color: #000000;
+}
+
+.btn-naver {
+    background-color: #03C75A;
+    color: white;
+    box-shadow: 0 4px 15px rgba(3, 199, 90, 0.3);
+}
+
+.btn-naver:hover {
+    background-color: #02b351;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(3, 199, 90, 0.4);
+    color: white;
+}
+
+/* Modern Table */
+.table-container {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.modern-table th {
+    background-color: #f5f5f5; /* Light Gray */
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 16px;
+    text-align: left;
+    border-bottom: 2px solid var(--border-color);
+    white-space: nowrap;
+}
+
+.modern-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-light);
+    transition: background-color 0.2s;
+    white-space: nowrap; /* Prevent line break */
+}
+
+.modern-table tr:hover td {
+    background-color: #fcf4fd;
+    color: var(--primary-color);
+}
+
+.modern-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Navbar Customization */
+.modern-navbar {
+    background-color: rgba(51, 51, 51, 0.95); /* Dark Gray */
+    backdrop-filter: blur(10px);
+    padding: 5px 0; /* Reduced padding for thinner look */
+    box-shadow: var(--shadow-sm);
+    border-bottom: 3px solid var(--accent-black);
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between; /* Space out menu and login/logout */
+    align-items: center;
+    min-height: 40px; /* Reduced minimum height */
+}
+
+.nav-links {
+    display: flex;
+    gap: 2px; /* Reduced gap */
+    align-items: center;
+}
+
+.nav-right {
+    display: flex;
+    gap: 10px; /* Reduced gap */
+    align-items: center;
+}
+
+.nav-item {
+    position: relative;
+    list-style: none; /* Ensure no bullets */
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Slightly reduced gap */
+    padding: 6px 8px; /* Reduced padding for thinner look */
+    color: rgba(255, 255, 255, 0.9); /* White text for dark navbar */
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-size: 14px; /* Slightly smaller font */
+    text-decoration: none; /* Ensure no underline */
+}
+
+.nav-link:hover, .nav-item.dropdown:hover > .nav-link {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff; /* Pure White */
+}
+
+.nav-link .material-symbols-outlined {
+    font-size: 20px;
+    color: #ffffff; /* White Icons */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--white);
+    min-width: 150px; /* Reduced width */
+    border-radius: 8px; /* Slightly smaller radius */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Smaller shadow */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 1000;
+    padding: 6px; /* Reduced padding */
+    border: 1px solid rgba(0,0,0,0.05);
+    margin-top: 8px; /* Reduced gap */
+}
+
+/* Arrow for dropdown */
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: var(--white);
+    border-top: 1px solid rgba(0,0,0,0.05);
+    border-left: 1px solid rgba(0,0,0,0.05);
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    justify-content: center; /* Center content */
+    align-items: center;
+    padding: 8px 12px; /* Compact padding */
+    color: var(--text-main);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 13px; /* Smaller font */
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa; /* Very light gray hover */
+    color: var(--primary-color); /* Dark text on hover */
+    /* Removed translation for better centering */
+}
+
+/* Pagination */
+.pagination-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.modern-pagination {
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.modern-pagination li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Circular */
+    background: white;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    border: 1px solid var(--border-color);
+}
+
+.modern-pagination li.active a {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(51, 51, 51, 0.3);
+    border-color: var(--primary-color);
+}
+
+.modern-pagination li a:hover:not(.active) {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+    .layout-content {
+        padding: 130px 12px 30px;
+    }
+
+    .navbar-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap; /* Prevent wrapping */
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 10px; /* Reduced side padding */
+        gap: 4px; /* Reduced gap */
+        overflow-x: auto; /* Allow horizontal scroll if really needed */
+        scrollbar-width: none; /* Hide scrollbar */
+        -ms-overflow-style: none;
+    }
+    
+    .navbar-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-links {
+        order: 1;
+        flex: 0 0 auto; /* Don't shrink/grow weirdly */
+        display: flex;
+        gap: 2px;
+    }
+    
+    .nav-right {
+        order: 2;
+        flex: 0 0 auto;
+        display: flex;
+        gap: 4px;
+        margin-left: auto; /* Push to right */
+    }
+
+    .nav-link {
+        font-size: 0; /* Hide text by default on small screens */
+        padding: 6px;
+    }
+    
+    .nav-link .material-symbols-outlined {
+        font-size: 22px; /* Slightly larger icon */
+        margin-right: 0;
+    }
+    
+    /* Show text only for specific important items if needed, or keep icons only */
+    /* Example: Show '에스트레픽' text for home link */
+    .nav-item:first-child .nav-link {
+        font-size: 14px;
+        font-weight: 700;
+        padding-right: 8px;
+    }
+    
+    /* User name text in nav-right */
+    .nav-right .nav-item:first-child .nav-link {
+        font-size: 13px; /* Show username */
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block; /* Required for text-overflow */
+        line-height: 22px; /* Vertically center with icon */
+    }
+    
+    .nav-right .nav-item:first-child .nav-link .material-symbols-outlined {
+        float: left; /* Icon next to text */
+        margin-right: 4px;
+        font-size: 20px;
+    }
+    
+    /* Dropdown adjustments for mobile */
+    .dropdown-menu {
+        position: fixed; /* Use fixed for better mobile modal-like feel */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 80%;
+        max-width: 300px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        z-index: 1100;
+        text-align: center;
+        padding: 15px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .nav-item.dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+        display: block;
+    }
+    
+    /* Overlay for dropdown */
+    .nav-item.dropdown.active::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: 1090;
+        pointer-events: none; /* Let click pass through to close? No, JS handles toggle */
+    }
+
+    .dropdown-item {
+        font-size: 16px;
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .table-container {
+        padding: 16px;
+    }
+
+    .modern-table th,
+    .modern-table td {
+        padding: 12px;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .modern-pagination li a {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+}

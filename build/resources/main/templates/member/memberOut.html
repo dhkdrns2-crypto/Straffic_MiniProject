@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .member-list-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px; /* Reduced padding */
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            letter-spacing: -0.5px;
+        }
+
+        .total-count {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .total-count span {
+            color: #333;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .member-list-container {
+                padding: 16px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .page-title {
+                font-size: 1.4rem;
+            }
+
+            .total-count {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</th:block>
+
+<div layout:fragment="content">
+    <div class="member-list-container">
+        <div class="page-header">
+            <h2 class="page-title">회원 목록</h2>
+            <div class="total-count">
+                전체 회원 <span th:text="${list.size()}">0</span>명
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="modern-table">
+                <thead>
+                <tr>
+                    <th style="width: 25%;">아이디</th>
+                    <th style="width: 25%;">이름</th>
+                    <th style="width: 50%;">전화번호</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="emp : ${list}">
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="material-symbols-outlined" style="font-size: 20px; color: #999;">person</span>
+                            <span th:text="${emp.id}" style="font-weight: 500;">user1</span>
+                        </div>
+                    </td>
+                    <td th:text="${emp.name}">홍길동</td>
+                    <td th:text="${emp.tel}">010-1234-5678</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(list)}">
+                    <td colspan="3" style="text-align: center; padding: 50px; color: #999;">
+                        등록된 회원이 없습니다.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 페이징 처리 -->
+        <div class="pagination-container" th:if="${totalPage > 0}">
+            <ul class="modern-pagination">
+                <li th:each="page, stat : ${#numbers.sequence(0, totalPage - 1)}"
+                    th:classappend="${nowpage == stat.index + 1} ? 'active'">
+                    <a th:href="@{/memberOut(page=${stat.index})}"
+                       th:text="${stat.index + 1}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</html>
