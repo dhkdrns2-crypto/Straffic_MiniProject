@@ -109,4 +109,14 @@ public class NoticeServiceImpl implements NoticeService {
     public NoticeEntity get(Long id) {
         return noticeRepository.findById(id).orElseThrow(() -> new IllegalStateException("공지사항을 찾을 수 없습니다"));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<NoticeEntity> getRecentNotices() {
+        try {
+            return noticeRepository.findTop3ByOrderByCreatedAtDesc();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
 }

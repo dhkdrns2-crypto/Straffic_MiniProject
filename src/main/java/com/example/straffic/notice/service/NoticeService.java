@@ -14,4 +14,5 @@ public interface NoticeService {
     NoticeEntity findAndIncreaseViews(Long id);
     byte[] getImageData(Long noticeId);
     NoticeEntity get(Long id);
+    List<NoticeEntity> getRecentNotices();
 }

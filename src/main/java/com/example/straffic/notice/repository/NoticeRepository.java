@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface NoticeRepository extends JpaRepository<NoticeEntity, Long> {
     @Query("""
@@ -16,5 +18,8 @@ public interface NoticeRepository extends JpaRepository<NoticeEntity, Long> {
             order by n.pinned desc, n.createdAt desc
             """)
     Page<NoticeEntity> search(String q, String tag, Pageable pageable);
+
+    // 최신 공지 3개 조회 (상단 고정 무시, 작성일 내림차순)
+    List<NoticeEntity> findTop3ByOrderByCreatedAtDesc();
 }
 
