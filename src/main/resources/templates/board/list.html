@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <style>
+        .noticeList table { width: 100%; border-collapse: collapse; background: white; }
+        .noticeList th, .noticeList td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
+        .noticeList thead th { background: #f7f7f7; font-weight: 700; color: #333; }
+        .noticeList .tit { text-align: left; }
+        .noticeList .tit a { color: #333; text-decoration: none; }
+        .noticeList .tit a:hover { text-decoration: underline; }
+        
+        /* Column Widths */
+        .noticeList .num { width: 80px; color: #777; }
+        .noticeList .writer { width: 120px; color: #777; }
+        .noticeList .date { width: 120px; color: #777; }
+        .noticeList .count { width: 100px; color: #777; }
+        
+        .notice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .notice-header h1 { font-size: 2rem; font-weight: 700; margin: 0; color: #333; }
+        
+        .notice-tools { display: flex; gap: 10px; margin: 14px 0 18px; width: 100%; }
+        .notice-tools form { display: flex; gap: 8px; flex: 1; }
+        .notice-tools select { width: 100px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .notice-tools input { flex: 1; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+        
+        .btn-write, .btn-search { padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 0.9rem; border: none; cursor: pointer; }
+        .btn-write { background: #333; color: #fff; }
+        .btn-write:hover { background: #000; }
+        .btn-search { background: #333; color: #fff; }
+        .btn-search:hover { background: #000; }
+
+        .pagination { margin-top: 30px; display: flex; justify-content: center; gap: 5px; }
+        .pagination a, .pagination span { min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #e0e0e0; border-radius: 4px; background: #fff; color: #555; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; }
+        .pagination a:hover { background-color: #f5f5f5; color: #333; border-color: #ccc; }
+        .pagination strong { min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #333; color: #fff; border: 1px solid #333; border-radius: 4px; font-weight: 600; }
+        .pagination .paginationNum { display: flex; gap: 5px; }
+
+        .pinnedTag { color: #e53935; font-weight: 700; margin-right: 4px; }
+        .popularTag { color: #6a1b9a; font-weight: 700; margin-right: 4px; }
+    </style>
+
+    <div class="notice-header">
+        <h1>게시판</h1>
+    </div>
+
+    <div class="notice-tools">
+        <form th:action="@{/board/list}" method="get" style="display:flex; gap:8px;">
+            <select name="type">
+                <option value="title" th:selected="${type == null or type == 'title'}">제목</option>
+                <option value="author" th:selected="${type == 'author'}">작성자</option>
+            </select>
+            <input type="text" name="q" th:value="${q}" placeholder="검색어를 입력하세요.">
+            <button type="submit" class="btn-search">검색</button>
+        </form>
+        <a class="btn-write" th:href="@{/board/write}" sec:authorize="isAuthenticated()">글쓰기</a>
+    </div>
+
+    <div class="noticeList">
+        <table>
+            <colgroup>
+                <col class="num">
+                <col class="tit">
+                <col class="writer">
+                <col class="date">
+                <col class="count">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="num">번호</th>
+                <th class="tit">제목</th>
+                <th class="writer">작성자</th>
+                <th class="date">등록일</th>
+                <th class="count">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Pinned Items -->
+            <tr th:if="${pinned != null}" th:each="b : ${pinned}" style="background-color: #fcfcfc;">
+                <td class="num"><span class="pinnedTag" style="color:#e53935;">[공지]</span></td>
+                <td class="tit">
+                    <a th:href="@{/board/view/{id}(id=${b.id})}" style="font-weight:bold;">
+                        <span th:text="${b.title}">제목</span>
+                    </a>
+                </td>
+                <td class="writer" th:text="${b.author != null ? b.author.name : '알수없음'}">작성자</td>
+                <td class="date" th:text="${#temporals.format(b.createdAt, 'yyyy-MM-dd')}">2025-01-01</td>
+                <td class="count" th:text="${b.views}">0</td>
+            </tr>
+
+            <!-- Top 3 Items -->
+            <tr th:if="${top3 != null}" th:each="b : ${top3}" style="background-color: #fcfcfc;">
+                <td class="num"><span class="popularTag">[인기]</span></td>
+                <td class="tit">
+                    <a th:href="@{/board/view/{id}(id=${b.id})}" style="font-weight:bold;">
+                        <span th:text="${b.title}">제목</span>
+                    </a>
+                </td>
+                <td class="writer" th:text="${b.author != null ? b.author.name : '알수없음'}">작성자</td>
+                <td class="date" th:text="${#temporals.format(b.createdAt, 'yyyy-MM-dd')}">2025-01-01</td>
+                <td class="count" th:text="${b.views}">0</td>
+            </tr>
+
+            <!-- General Items -->
+            <tr th:each="b : ${boards.content}">
+                <td class="num" th:text="${b.id}">1</td>
+                <td class="tit">
+                    <a th:href="@{/board/view/{id}(id=${b.id})}" th:text="${b.title}">제목</a>
+                    <span th:if="${b.comments != null and !b.comments.isEmpty()}" th:text="' [' + ${b.comments.size()} + ']'" style="color:#e53935; font-size:0.8rem; font-weight:bold;"></span>
+                </td>
+                <td class="writer" th:text="${b.author != null ? b.author.name : '알수없음'}">작성자</td>
+                <td class="date" th:text="${#temporals.format(b.createdAt, 'yyyy-MM-dd')}">2025-01-01</td>
+                <td class="count" th:text="${b.views}">0</td>
+            </tr>
+            
+            <tr th:if="${boards.totalElements == 0 and (pinned == null or pinned.isEmpty()) and (top3 == null or top3.isEmpty())}">
+                <td colspan="5" style="text-align:center; color:#777; padding: 40px 0;">게시글이 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" th:if="${boards.totalPages > 0}">
+            <a th:href="@{/board/list(page=0, q=${q}, type=${type})}" title="처음"><span class="material-symbols-outlined" style="font-size:16px;">first_page</span></a>
+            <a th:if="${boards.number > 0}" th:href="@{/board/list(page=${boards.number - 1}, q=${q}, type=${type})}" title="이전"><span class="material-symbols-outlined" style="font-size:16px;">chevron_left</span></a>
+            
+            <span class="paginationNum">
+                <th:block th:with="start=${(boards.number/5)*5}, end=${((boards.number/5)*5)+4 < boards.totalPages-1 ? ((boards.number/5)*5)+4 : boards.totalPages-1}">
+                    <th:block th:each="i : ${#numbers.sequence(start, end)}">
+                        <strong th:if="${i == boards.number}" th:text="${i + 1}">1</strong>
+                        <a th:unless="${i == boards.number}" th:href="@{/board/list(page=${i}, q=${q}, type=${type})}" th:text="${i + 1}">2</a>
+                    </th:block>
+                </th:block>
+            </span>
+
+            <a th:if="${boards.number + 1 < boards.totalPages}" th:href="@{/board/list(page=${boards.number + 1}, q=${q}, type=${type})}" title="다음"><span class="material-symbols-outlined" style="font-size:16px;">chevron_right</span></a>
+            <a th:href="@{/board/list(page=${boards.totalPages - 1}, q=${q}, type=${type})}" title="끝"><span class="material-symbols-outlined" style="font-size:16px;">last_page</span></a>
+        </div>
+</div>
+</body>
+</html>

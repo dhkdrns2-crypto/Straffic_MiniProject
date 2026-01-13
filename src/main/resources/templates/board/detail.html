@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <style>
+        .noticeView { background: white; padding: 24px; border-radius: 12px; }
+        .noticeView h3 { font-size: 1.6rem; margin-bottom: 20px; font-weight: 700; color: #333; }
+        .noticeInfo { display: flex; gap: 24px; margin-bottom: 24px; color: #777; font-size: 0.9rem; border-bottom: 1px solid #eee; padding-bottom: 16px; }
+        .noticeInfo dl { display: flex; gap: 8px; margin: 0; align-items: center; }
+        .noticeInfo dt { font-weight: 600; color: #555; }
+        .noticeInfo dd { margin: 0; }
+        
+        .noticeCnts { padding: 10px 0 30px; min-height: 200px; line-height: 1.6; color: #444; font-size: 1rem; }
+        .notice-images { margin: 20px 0; display: flex; flex-wrap: wrap; gap: 15px; }
+        .notice-images img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
+        .noticeBt { margin-top: 40px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 20px; }
+        .btList, .btEdit, .btDelete { padding: 10px 20px; border-radius: 6px; text-decoration: none; border: 1px solid #ddd; background: #fff; color: #333; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .btList:hover, .btEdit:hover { background: #f5f5f5; color: #000; border-color: #ccc; }
+        .btDelete { color: #e53935; border-color: #ffcdd2; background: #fff; }
+        .btDelete:hover { background: #fff5f5; border-color: #e53935; }
+        
+        .comments-section { margin-top: 50px; background: #fcfcfc; padding: 30px; border-radius: 12px; border: 1px solid #f0f0f0; }
+        .comments-header { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; color: #333; display: flex; align-items: center; gap: 8px; }
+        .comment-item { border-bottom: 1px solid #eee; padding: 20px 0; }
+        .comment-item:last-child { border-bottom: none; }
+        .comment-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .comment-author { font-weight: 700; color: #333; font-size: 0.95rem; }
+        .comment-date { color: #999; font-size: 0.85rem; margin-left: 10px; }
+        .comment-content { color: #444; line-height: 1.5; font-size: 0.95rem; white-space: pre-wrap; }
+        .comment-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .comment-btn { font-size: 0.8rem; color: #888; text-decoration: none; background: none; border: none; cursor: pointer; padding: 0; }
+        .comment-btn:hover { color: #333; text-decoration: underline; }
+        .comment-btn.delete { color: #e53935; }
+
+        .comment-form { margin-top: 30px; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
+        .emoji-picker { display: flex; gap: 8px; margin-bottom: 12px; }
+        .emoji-picker button { border: 1px solid #eee; background: #fff; border-radius: 4px; padding: 6px 10px; cursor: pointer; font-size: 1.2rem; transition: all 0.2s; }
+        .emoji-picker button:hover { background: #f0f0f0; transform: scale(1.1); }
+        .comment-input-group { display: flex; gap: 12px; }
+        .comment-input-group textarea { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 6px; min-height: 80px; resize: vertical; font-size: 0.95rem; }
+        .comment-input-group textarea:focus { outline: none; border-color: #333; }
+        .btn-submit-comment { padding: 0 24px; background: #333; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-submit-comment:hover { background: #000; }
+        
+        .acchidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    </style>
+    <div class="noticeView">
+        <h3 th:text="${board.title}">제목</h3>
+        <div class="noticeInfo">
+            <dl>
+                <dt>작성자</dt>
+                <dd th:text="${board.author != null ? board.author.name : '알수없음'}">작성자</dd>
+            </dl>
+            <dl>
+                <dt>등록일</dt>
+                <dd th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01</dd>
+            </dl>
+            <dl>
+                <dt>조회수</dt>
+                <dd th:text="${board.views}">0</dd>
+            </dl>
+        </div>
+        
+        <div class="noticeCnts" th:utext="${board.content}">내용</div>
+        
+        <div class="notice-images" th:if="${board.imageData != null}">
+            <img th:src="@{/board/image/{id}(id=${board.id})}" alt="이미지">
+        </div>
+
+        <div class="noticeBt">
+            <a class="btList" th:href="@{/board/list}">목록</a>
+            <div>
+                <a class="btEdit" th:href="@{/board/edit/{id}(id=${board.id})}" th:if="${isAuthor}">수정</a>
+                <form th:action="@{/board/delete/{id}(id=${board.id})}" method="post" style="display:inline;" th:if="${isAuthor or isAdmin}">
+                    <button class="btDelete" type="submit" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <div class="comments-header">
+                <span class="material-symbols-outlined">forum</span>
+                댓글 <span th:text="${board.comments != null ? board.comments.size() : 0}" style="color:#e53935;">0</span>
+            </div>
+
+            <div th:each="c : ${board.comments}" class="comment-item">
+                <div class="comment-meta">
+                    <div>
+                        <span class="comment-author" th:text="${c.author != null ? c.author.name : '알수없음'}">작성자</span>
+                        <span class="comment-date" th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01</span>
+                    </div>
+                    <div class="comment-actions">
+                        <form th:action="@{/board/comment/{commentId}/delete(commentId=${c.id})}" method="post" style="display:inline;" th:if="${isAdmin or (authName != null and c.author != null and c.author.id == authName)}">
+                            <button class="comment-btn delete" type="submit" onclick="return confirm('댓글을 삭제하시겠습니까?')">삭제</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="comment-content" th:utext="${c.content}">댓글 내용</div>
+            </div>
+
+            <div sec:authorize="isAuthenticated()" class="comment-form">
+                <div class="emoji-picker">
+                    <button type="button" onclick="addEmoji('😀')">😀</button>
+                    <button type="button" onclick="addEmoji('🎉')">🎉</button>
+                    <button type="button" onclick="addEmoji('👍')">👍</button>
+                    <button type="button" onclick="addEmoji('❤️')">❤️</button>
+                    <button type="button" onclick="addEmoji('😂')">😂</button>
+                </div>
+                <form th:action="@{/board/{boardId}/comment(boardId=${board.id})}" method="post">
+                    <div class="comment-input-group">
+                        <textarea id="commentContent" name="content" placeholder="따뜻한 댓글을 남겨주세요." required></textarea>
+                        <button class="btn-submit-comment" type="submit">등록</button>
+                    </div>
+                </form>
+            </div>
+            <div sec:authorize="!isAuthenticated()" style="text-align:center; padding: 20px; color:#999; font-size:0.9rem;">
+                로그인 후 댓글을 작성할 수 있습니다.
+            </div>
+        </div>
+    </div>
+    <script>
+        function addEmoji(e) {
+            var ta = document.getElementById('commentContent');
+            if (!ta) return;
+            var start = ta.selectionStart || ta.value.length;
+            var end = ta.selectionEnd || ta.value.length;
+            ta.value = ta.value.substring(0, start) + e + ta.value.substring(end);
+            ta.focus();
+            ta.selectionStart = ta.selectionEnd = start + e.length;
+        }
+    </script>
+</div>
+</body>
+</html>

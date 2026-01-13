@@ -39,8 +39,8 @@
                 <div>
                     <label for="tag">태그</label>
                     <select id="tag" name="tag" required>
-                        <option value="#공지">#공지</option>
-                        <option value="#이벤트">#이벤트</option>
+                        <option value="공지">공지</option>
+                        <option value="이벤트">이벤트</option>
                     </select>
                 </div>
                 <div>
@@ -77,8 +77,8 @@
                 <div>
                     <label for="tagEdit">태그</label>
                     <select id="tagEdit" name="tag" required>
-                        <option value="#공지" th:selected="${notice.tag == '#공지'}">#공지</option>
-                        <option value="#이벤트" th:selected="${notice.tag == '#이벤트'}">#이벤트</option>
+                        <option value="공지" th:selected="${notice.tag == '공지'}">공지</option>
+                        <option value="이벤트" th:selected="${notice.tag == '이벤트'}">이벤트</option>
                     </select>
                 </div>
                 <div>
