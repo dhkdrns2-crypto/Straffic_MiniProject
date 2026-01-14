@@ -1,5 +1,8 @@
 package com.example.straffic.mobility.controller;
 
+import com.example.straffic.mobility.entity.SubwayStationEntity;
+import com.example.straffic.mobility.repository.SubwayStationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,9 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
+@RequiredArgsConstructor
 public class SubwayController {
     @Value("${kakao.js.key:}")
     private String kakaoJsKey;
+
+    private final SubwayStationRepository subwayStationRepository;
 
     @GetMapping("/subway")
     public String subwayMain(Model model) {
@@ -26,16 +32,56 @@ public class SubwayController {
     @ResponseBody
     public Map<String, Object> getStationsByLine(@RequestParam String lineNumber) {
         Map<String, Object> result = new HashMap<>();
+        List<SubwayStationEntity> entities = subwayStationRepository.findByLineNumber(lineNumber);
+        List<String> stationNames = new ArrayList<>();
+        for (SubwayStationEntity entity : entities) {
+            stationNames.add(entity.getStationName());
+        }
+        if (stationNames.isEmpty() && "1".equals(lineNumber)) {
+            stationNames.addAll(getDefaultStations());
+        }
         result.put("success", true);
         result.put("lineNumber", lineNumber);
-        result.put("stations", getDefaultStations());
+        result.put("stations", stationNames);
+        return result;
+    }
+
+    @GetMapping("/subway/api/stations/stats")
+    @ResponseBody
+    public Map<String, Object> getStationStats() {
+        Map<String, Object> result = new HashMap<>();
+        List<String> mainLines = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+        long total = subwayStationRepository.countByLineNumberIn(mainLines);
+        result.put("success", true);
+        result.put("totalStations", total);
         return result;
     }
 
     @GetMapping("/subway/api/search")
     @ResponseBody
     public ResponseEntity<List<Map<String, Object>>> searchStation(@RequestParam String keyword) {
+        List<SubwayStationEntity> entities = subwayStationRepository.findTop20ByStationNameContaining(keyword);
         List<Map<String, Object>> items = new ArrayList<>();
+        if (!entities.isEmpty()) {
+            for (SubwayStationEntity station : entities) {
+                Map<String, Object> m = new HashMap<>();
+                String line = station.getLineNumber();
+                String lineName;
+                if (line != null && line.matches("\\d+")) {
+                    lineName = line + "호선";
+                } else {
+                    lineName = line;
+                }
+                m.put("stationName", station.getStationName());
+                m.put("lineNumber", line);
+                m.put("lineName", lineName);
+                m.put("latitude", station.getLatitude());
+                m.put("longitude", station.getLongitude());
+                items.add(m);
+            }
+            return ResponseEntity.ok(items);
+        }
+
         for (String name : getAllStations()) {
             if (name.contains(keyword)) {
                 Map<String, Object> m = new HashMap<>();
@@ -47,7 +93,10 @@ public class SubwayController {
                 items.add(m);
             }
         }
-        return ResponseEntity.ok(items.size() > 10 ? items.subList(0, 10) : items);
+        if (items.size() > 10) {
+            items = items.subList(0, 10);
+        }
+        return ResponseEntity.ok(items);
     }
 
     @GetMapping("/subway/api/arrival/{stationName}")

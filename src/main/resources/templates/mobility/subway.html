@@ -109,9 +109,11 @@
         }
 
         (async () => {
-            const r = await fetch('/subway/api/stations/by-line?lineNumber=1');
+            const r = await fetch('/subway/api/stations/stats');
             const d = await r.json();
-            statTotal.textContent = (d.stations || []).length;
+            if (typeof d.totalStations === 'number') {
+                statTotal.textContent = d.totalStations;
+            }
         })();
     </script>
 </div>

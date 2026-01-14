@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .csrf(csrf -> csrf.disable())
-                        .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/home",
                                 "/memberInput", "/memInsert",
@@ -53,8 +53,7 @@ public class SecurityConfiguration {
                                 "/login/oauth2/code/**",
                                 "/oauth2/**",
                                 "/error",
-                                "/image/**", "/css/**", "/js/**",
-                                "/ktx/**", "/subway/**", "/bike/**"
+                                "/image/**", "/css/**", "/js/**"
                         ).permitAll()
                         .requestMatchers("/notice/list", "/notice/view/**", "/notice/image/**").permitAll()
                         .requestMatchers("/board/list", "/board/view/**", "/board/image/**").permitAll()
