@@ -5,24 +5,89 @@
 <body>
 <div layout:fragment="content">
     <style>
-        .ktx-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .search-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-label { font-weight: 600; }
-        .station-select, .form-input, .form-select { padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
-        .btn { padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; }
+        /* 1. 전체 아웃라인 및 바깥 배경 최소화 */
+        .ktx-container {
+            /* PC 버전 최적화 너비 설정 */
+            max-width: 800px;
+            width: 95%; /* 화면이 작아지면 모바일에 맞춰 자동으로 줄어듦 */
+
+            /* 바깥 배경(마진) 및 내부 여백 최소화 */
+            margin: 5px auto;
+            padding: 15px;
+
+            /* 아웃라인(테두리) 추가 */
+            border: 2px solid #333;
+            border-radius: 12px;
+            background: #fff;
+            box-sizing: border-box; /* 테두리가 너비에 포함되도록 설정 */
+        }
+
+        /* 검색 행: 기본 4열 구조 */
+        .search-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-label { font-size: 14px; font-weight: 600; }
+
+        .station-select, .form-input, .form-select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+        }
+
+        .btn { padding: 10px 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn-primary { background: #0066ff; color: #fff; }
-        .train-card { border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-top: 12px; display: grid; grid-template-columns: 1fr auto; gap: 12px; }
-        .train-route { display: flex; align-items: center; gap: 20px; font-size: 14px; }
-        .price { font-size: 18px; font-weight: 700; color: #222; }
-        .seat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 16px 0; }
-        .seat-item { border: 1px solid #ddd; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; }
+
+        /* 열차 카드: 아웃라인 추가 */
+        .train-card {
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+        }
+
+        .train-route { display: flex; align-items: center; gap: 15px; font-size: 14px; }
+        .price { font-size: 16px; font-weight: 700; color: #d32f2f; }
+
+        /* 좌석 그리드: 기본 5열 */
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .seat-item { border: 1px solid #ddd; border-radius: 6px; padding: 10px; text-align: center; }
         .seat-item.selected { background: #0066ff; color: #fff; }
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; }
+
+        /* 모달: 반응형 너비 적용 */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
         .modal.active { display: flex; }
-        .modal-content { background: #fff; border-radius: 12px; padding: 20px; width: 600px; max-width: calc(100% - 40px); }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 90%; /* 모바일에서 화면의 90% 차지 */
+            max-width: 500px; /* PC에서의 최대 너비 제한 */
+            border: 2px solid #0066ff; /* 모달 아웃라인 강조 */
+        }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .btn-close { border: none; background: transparent; font-size: 20px; cursor: pointer; }
+
+        /* 📱 모바일 버전 최적화 (768px 이하) */
+        @media (max-width: 768px) {
+            .ktx-container { margin: 2px auto; padding: 10px; } /* 바깥 여백 극소화 */
+            .search-row { grid-template-columns: repeat(2, 1fr); } /* 4열 -> 2열 */
+            .train-card { grid-template-columns: 1fr; text-align: center; } /* 1열 배치 */
+            .seat-grid { grid-template-columns: repeat(4, 1fr); } /* 5열 -> 4열 */
+        }
     </style>
 
     <div class="ktx-container">
