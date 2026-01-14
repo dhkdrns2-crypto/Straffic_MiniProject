@@ -21,7 +21,7 @@ public class KtxController {
         model.addAttribute("kakaoKey", kakaoJsKey);
         model.addAttribute("stations", getStations());
         model.addAttribute("trains", generateTrains("서울", "부산"));
-        return "ktx";
+        return "mobility/ktx";
     }
 
     @GetMapping("/ktx/search")

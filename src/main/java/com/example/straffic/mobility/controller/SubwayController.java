@@ -19,7 +19,7 @@ public class SubwayController {
         model.addAttribute("kakaoKey", kakaoJsKey);
         model.addAttribute("lines", getLines());
         model.addAttribute("stations", getDefaultStations());
-        return "subway";
+        return "mobility/subway";
     }
 
     @GetMapping("/subway/api/stations/by-line")

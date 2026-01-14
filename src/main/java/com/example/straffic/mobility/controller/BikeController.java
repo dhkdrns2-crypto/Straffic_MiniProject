@@ -14,6 +14,6 @@ public class BikeController {
     public String bikeMain(Model model) {
         model.addAttribute("pageTitle", "공유 모빌리티");
         model.addAttribute("kakaoKey", kakaoJsKey);
-        return "bike";
+        return "mobility/bike";
     }
 }
