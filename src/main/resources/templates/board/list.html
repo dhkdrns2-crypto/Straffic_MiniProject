@@ -3,114 +3,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/board-list.css(v=${#dates.createNow().getTime()})}">
+</th:block>
+
 <body>
 <div layout:fragment="content">
-    <style>
-        .notice-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .noticeList table { width: 100%; border-collapse: collapse; background: white; table-layout: fixed; }
-        .noticeList th, .noticeList td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
-        .noticeList thead th { background: #f7f7f7; font-weight: 700; color: #333; }
-        .noticeList .tit { text-align: left; }
-        .noticeList .tit a { color: #333; text-decoration: none; }
-        .noticeList .tit a:hover { text-decoration: underline; }
-        
-        /* Column Widths */
-        .noticeList .num { width: 80px; color: #777; }
-        .noticeList .writer { width: 120px; color: #777; }
-        .noticeList .date { width: 120px; color: #777; }
-        .noticeList .count { width: 100px; color: #777; }
-        
-        .notice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-        .notice-header h1 { font-size: 2rem; font-weight: 700; margin: 0; color: #333; }
-        
-        .notice-tools { display: flex; gap: 10px; margin: 14px 0 18px; }
-        .notice-tools form { display: flex; gap: 8px; }
-        .notice-tools select { width: 100px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
-        .notice-tools input { width: 300px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
-        
-        .btn-write, .btn-search { padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 0.9rem; border: none; cursor: pointer; }
-        .btn-write { background: #333; color: #fff; }
-        .btn-write:hover { background: #000; }
-        .btn-search { background: #333; color: #fff; }
-        .btn-search:hover { background: #000; }
-
-        .pagination { margin-top: 30px; display: flex; justify-content: center; gap: 5px; }
-        .pagination a, .pagination span { min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #e0e0e0; border-radius: 4px; background: #fff; color: #555; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; }
-        .pagination a:hover { background-color: #f5f5f5; color: #333; border-color: #ccc; }
-        .pagination strong { min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #333; color: #fff; border: 1px solid #333; border-radius: 4px; font-weight: 600; }
-        .pagination .paginationNum { display: flex; gap: 5px; }
-
-        .pinnedTag { color: #e53935; font-weight: 700; margin-right: 4px; }
-        .popularTag { color: #6a1b9a; font-weight: 700; margin-right: 4px; }
-
-        /* 모바일 최적화 (Max Width 768px) */
-        @media (max-width: 768px) {
-            .notice-container { padding: 0 16px; }
-            .notice-header h1 { font-size: 1.5rem; }
-            
-            /* 검색 도구 모바일 최적화 */
-            .notice-tools { flex-direction: column; gap: 10px; }
-            .notice-tools form { display: flex; gap: 8px; width: 100%; }
-            .notice-tools select { width: 80px; flex-shrink: 0; }
-            .notice-tools input { flex: 1; width: auto; }
-            .btn-search { width: 60px; flex-shrink: 0; }
-            .btn-write { width: 100%; text-align: center; box-sizing: border-box; }
-
-            /* 테이블 -> 카드 리스트 변환 */
-            .noticeList table { display: block; border: 0; }
-            .noticeList thead { display: none; }
-            .noticeList tbody { display: block; }
-            
-            .noticeList tr { 
-                display: block; 
-                padding: 16px; 
-                border-bottom: 1px solid #eee; 
-                background: #fff;
-                position: relative;
-            }
-            
-            .noticeList td { 
-                display: block; 
-                padding: 0; 
-                border: none; 
-                text-align: left; 
-                width: auto;
-                box-sizing: border-box;
-            }
-
-            /* 번호(ID)는 숨기고, 공지/인기 태그가 있는 경우에만 표시 */
-            .noticeList .num { display: none; }
-            .noticeList .num:has(.pinnedTag), 
-            .noticeList .num:has(.popularTag) { 
-                display: inline-block; 
-                margin-bottom: 4px; 
-            }
-
-            /* 제목 스타일 */
-            .noticeList .tit { 
-                font-size: 1.1rem; 
-                font-weight: 600; 
-                margin-bottom: 8px;
-                display: block;
-                line-height: 1.4;
-            }
-            
-            /* 작성자, 날짜, 조회수 한 줄로 배치 */
-            .noticeList .writer, 
-            .noticeList .date, 
-            .noticeList .count { 
-                display: inline-block; 
-                font-size: 0.85rem; 
-                color: #888; 
-                width: auto;
-                margin-right: 10px;
-            }
-            
-            /* 구분자 */
-            .noticeList .writer::after { content: "|"; margin-left: 10px; color: #ddd; }
-            .noticeList .date::after { content: "|"; margin-left: 10px; color: #ddd; }
-        }
-    </style>
 
     <div class="notice-container">
         <div class="notice-header">

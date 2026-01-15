@@ -1,0 +1,211 @@
+/* ktx.html과 동일한 간격 적용 */
+.layout-content {
+    padding: 80px 0 40px;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.bike-container {
+    width: 1150px;
+    max-width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.ktx-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: #333;
+}
+
+.ktx-subtitle {
+    margin: 0 0 24px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.left-panel {
+    width: 320px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.filter-section,
+.search-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.section-header {
+    font-weight: 700;
+    margin-bottom: 16px;
+    font-size: 1rem;
+    color: #333;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    margin-bottom: 8px;
+}
+
+.filter-option:hover {
+    background: #f9f9f9;
+}
+
+.filter-option.active {
+    background: #f0f7ff;
+    border-color: #cce5ff;
+    color: #0066ff;
+    font-weight: 600;
+}
+
+.right-panel {
+    flex: 1;
+}
+
+#map {
+    width: 100%;
+    height: 750px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.search-button {
+    width: 100%;
+    background: #333;
+    color: #fff;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.95rem;
+}
+
+.search-button:hover {
+    background: #000;
+}
+
+.custom-infowindow {
+    padding: 15px;
+    min-width: 200px;
+}
+
+.info-status {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #28a745;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.info-status.low {
+    background: #ffc107;
+    color: #333;
+}
+
+.info-status.none {
+    background: #dc3545;
+}
+
+@media (max-width: 1024px) {
+    .bike-container {
+        width: auto;
+        max-width: 100%;
+        padding: 30px;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .left-panel {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    #map {
+        height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .bike-container {
+        padding: 20px 16px;
+    }
+
+    .content-wrapper {
+        flex-direction: column-reverse;
+        gap: 16px;
+    }
+
+    .left-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    #map {
+        height: 50vh;
+        min-height: 400px;
+    }
+
+    .filter-section,
+    .search-card {
+        padding: 16px;
+    }
+
+    .ktx-title {
+        font-size: 1.35rem;
+        margin-bottom: 8px;
+    }
+
+    .ktx-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 16px;
+    }
+
+    .section-header {
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+
+    .filter-option {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+

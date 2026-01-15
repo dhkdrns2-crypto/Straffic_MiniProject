@@ -3,133 +3,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/notice-list.css(v=${#dates.createNow().getTime()})}">
+</th:block>
+
 <body>
 <div layout:fragment="content">
-    <style>
-        .notice-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .noticeList table { width: 100%; border-collapse: collapse; background: white; table-layout: fixed; }
-        .noticeList th, .noticeList td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
-        .noticeList thead th { background: #f7f7f7; font-weight: 700; }
-        .noticeList .cate { width: 120px; color: #6a1b9a; font-weight: 700; }
-        .noticeList .tit a { color: #333; text-decoration: none; }
-        .noticeList .tit a:hover { text-decoration: underline; }
-        .noticeList .date { width: 140px; color: #777; }
-        .noticeList .count { width: 100px; color: #777; text-align: right; }
-        .notice-tools { display: flex; gap: 10px; margin: 14px 0 18px; }
-        .notice-tools input, .notice-tools select { padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
-        
-        .pagination { 
-            margin-top: 30px; 
-            display: flex; 
-            justify-content: center; 
-            gap: 5px; 
-        }
-        .pagination a, .pagination span { 
-            min-width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #e0e0e0; 
-            border-radius: 4px; 
-            background: #fff; 
-            color: #555; 
-            text-decoration: none; 
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-        .pagination a:hover {
-            background-color: #f5f5f5;
-            color: #333;
-            border-color: #ccc;
-        }
-        .pagination strong { 
-            min-width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #333; 
-            color: #fff; 
-            border: 1px solid #333; 
-            border-radius: 4px; 
-            font-weight: 600;
-        }
-        .pagination .paginationNum {
-            display: flex;
-            gap: 5px;
-        }
-
-        .notice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        .btn-write { padding: 8px 14px; background: #333; color: #fff; border-radius: 6px; text-decoration: none; }
-        .btn-write:hover { background: #000; }
-
-        @media (max-width: 768px) {
-            .notice-container { padding: 0 16px; }
-            .notice-header h1 { font-size: 1.5rem; }
-
-            .notice-tools { flex-direction: column; gap: 10px; }
-            .notice-tools form { display: flex; gap: 8px; width: 100%; }
-            .notice-tools select { width: 100px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
-            .notice-tools input { flex: 1; width: auto; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
-            .btn-write { width: 100%; text-align: center; box-sizing: border-box; }
-
-            .noticeList table { display: block; border: 0; }
-            .noticeList thead { display: none; }
-            .noticeList tbody { display: block; }
-
-            .noticeList tr {
-                display: block;
-                padding: 16px;
-                border-bottom: 1px solid #eee;
-                background: #fff;
-                position: relative;
-            }
-
-            .noticeList td {
-                display: block;
-                padding: 0;
-                border: none;
-                text-align: left;
-                width: auto;
-                box-sizing: border-box;
-            }
-
-            .noticeList .cate {
-                font-size: 0.85rem;
-                font-weight: 700;
-                color: #6a1b9a;
-                margin-bottom: 4px;
-            }
-
-            .noticeList .tit {
-                font-size: 1.1rem;
-                font-weight: 600;
-                margin-bottom: 8px;
-                display: block;
-                line-height: 1.4;
-            }
-
-            .noticeList .date,
-            .noticeList .count {
-                display: inline-block;
-                font-size: 0.85rem;
-                color: #888;
-                width: auto;
-                margin-right: 10px;
-            }
-
-            .noticeList .date::after {
-                content: "|";
-                margin-left: 10px;
-                color: #ddd;
-            }
-
-            .noticeList .count { text-align: left; }
-
-            .pagination { margin-top: 20px; }
-        }
-    </style>
 
     <div class="notice-container">
         <div class="notice-header">
@@ -170,8 +50,8 @@
                     <td class="cate" th:text="${n.tag}">[공지]</td>
                     <td class="tit">
                         <a th:href="@{/notice/view/{id}(id=${n.id})}">
-                            <span th:if="${n.pinned}" style="color:#e53935; font-weight:700;">[상단]</span>
-                            <span th:text="${#strings.length(n.title) > 5 ? #strings.substring(n.title, 0, 5) + '...' : n.title}">제목</span>
+                            <span th:if="${n.pinned}" style="color:#e53935; font-weight:700;">[📢]</span>
+                            <span th:text="${n.title}">제목</span>
                         </a>
                     </td>
                     <td class="date" th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd')}">2026-01-01</td>

@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Layout</title>
 
-    <!-- Custom Fonts & Icons -->
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" th:href="@{/css/layout.css(v=${#dates.createNow().getTime()})}">
-    <link rel="stylesheet" th:href="@{/css/admin_custom.css(v=${#dates.createNow().getTime()})}">
-    
+    <!-- Global CSS -->
+    <link rel="stylesheet" th:href="@{/css/layout.css(v=${#dates.createNow().time})}">
+    <link rel="stylesheet" th:href="@{/css/admin_custom.css(v=${#dates.createNow().time})}">
+
+    <!-- Page CSS -->
     <th:block layout:fragment="css"></th:block>
-    
+
+    <!-- JS -->
     <script th:src="@{/js/layout.js}" defer></script>
     <th:block layout:fragment="script"></th:block>
 </head>
+
 <body class="layout-body">
 
-<div th:replace="fragments/header :: header"></div>
+<header th:replace="fragments/header :: header"></header>
 
 <main class="layout-content">
-    <div layout:fragment="content"></div>
+    <div class="layout-inner" layout:fragment="content"></div>
 </main>
 
 <footer class="layout-footer"
-        th:replace="fragments/footer :: footer">
-</footer>
+        th:replace="fragments/footer :: footer"></footer>
 
 </body>
 </html>
-

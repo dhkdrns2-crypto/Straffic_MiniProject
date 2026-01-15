@@ -1,0 +1,55 @@
+.member-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.page-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    letter-spacing: -0.5px;
+}
+
+.total-count {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.total-count span {
+    color: #333;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .member-list-container {
+        padding: 16px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .page-title {
+        font-size: 1.4rem;
+    }
+
+    .total-count {
+        font-size: 0.9rem;
+    }
+}
+
