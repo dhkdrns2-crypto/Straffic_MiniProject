@@ -63,7 +63,7 @@
             </div>
             <div class="seat-modal-actions">
                 <button type="button" class="btn" onclick="closeModal()">취소</button>
-                <button type="button" class="btn btn-primary" onclick="confirmReservation()">예약하기</button>
+                <button type="button" class="btn btn-primary" onclick="confirmReservation()">예매하기</button>
             </div>
         </div>
     </div>
@@ -187,15 +187,15 @@
                     summary.innerHTML =
                         `<div style="display:flex; justify-content:space-between; align-items:center;">` +
                         `<div>` +
-                        `예약번호: <strong>${data.reservationId}</strong><br>` +
+                        `예매번호: <strong>${data.reservationId}</strong><br>` +
                         `${data.date} ${data.from} → ${data.to} (${data.trainNo})<br>` +
                         `좌석: ${data.seats.join(', ')}번 / 금액: ${data.price.toLocaleString()}원` +
                         `</div>` +
-                        `<div><button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem; background-color: #d9534f;" onclick="cancelReservation(${data.id})">예약취소</button></div>` +
+                        `<div><button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem; background-color: #d9534f;" onclick="cancelReservation(${data.id})">예매취소</button></div>` +
                         `</div>`;
-                    alert(`예약이 완료되었습니다 (예약번호: ${data.reservationId})`);
+                    alert(`예매가 완료되었습니다 (예매번호: ${data.reservationId})`);
                 } else {
-                    alert(data.message || '예약에 실패했습니다');
+                    alert(data.message || '예매에 실패했습니다');
                 }
                 closeModal();
                 searchTrains();
@@ -203,7 +203,7 @@
         }
 
         function cancelReservation(id) {
-            if (!confirm('정말로 예약을 취소하시겠습니까?')) return;
+            if (!confirm('정말로 예매를 취소하시겠습니까?')) return;
 
             fetch('/ktx/api/cancel', {
                 method: 'POST',
@@ -211,12 +211,12 @@
                 body: new URLSearchParams({ id: id })
             }).then(r => r.json()).then(data => {
                 if (data.success) {
-                    alert('예약이 취소되었습니다.');
+                    alert('예매가 취소되었습니다.');
                     document.getElementById('reservationSummary').style.display = 'none';
                     document.getElementById('reservationSummary').innerHTML = '';
                     searchTrains();
                 } else {
-                    alert(data.message || '예약 취소에 실패했습니다.');
+                    alert(data.message || '예매 취소에 실패했습니다.');
                 }
             });
         }

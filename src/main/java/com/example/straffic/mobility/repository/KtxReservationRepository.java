@@ -4,6 +4,7 @@ import com.example.straffic.mobility.entity.KtxReservationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface KtxReservationRepository extends JpaRepository<KtxReservationEntity, Long> {
@@ -11,5 +12,7 @@ public interface KtxReservationRepository extends JpaRepository<KtxReservationEn
     List<KtxReservationEntity> findByTrainNoAndTravelDate(String trainNo, LocalDate travelDate);
     List<KtxReservationEntity> findByMemberIdOrderByReservedAtDesc(String memberId);
     void deleteByMemberId(String memberId);
+
+    long countByReservedAtBetween(LocalDateTime start, LocalDateTime end);
 }
 
