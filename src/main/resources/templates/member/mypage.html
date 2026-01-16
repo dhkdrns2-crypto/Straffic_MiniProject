@@ -111,13 +111,12 @@
 
             <div class="section section-margin-top">
                 <div class="section-header">
-                    <div class="section-title">KTX 예약 내역</div>
-                    <div class="section-subtitle">최신순</div>
+                    <div class="section-title">KTX 예매 내역</div>
                 </div>
 
                 <div th:if="${#lists.isEmpty(ktxReservations)}" class="empty-state">
                     <div class="empty-icon">🚄</div>
-                    <div class="empty-text">예약 내역이 없습니다</div>
+                    <div class="empty-text">예매 내역이 없습니다</div>
                 </div>
 
                 <div class="card-list" th:if="${!#lists.isEmpty(ktxReservations)}">
@@ -136,7 +135,8 @@
                             </div>
                         </div>
                         <div class="card-right">
-                            <div class="status" th:text="${item.status}"></div>
+                            <div class="status"
+                                 th:text="${item.status == '예약완료' ? '예매완료' : item.status}"></div>
                             <button class="btn-cancel" th:attr="data-id=${item.id}" onclick="cancelReservation(this)">예매 취소</button>
                         </div>
                     </div>
@@ -149,17 +149,17 @@
         function cancelReservation(el) {
             const id = el.getAttribute('data-id');
             if (!id) return;
-            if (!confirm('정말로 예약을 취소하시겠습니까?')) return;
+            if (!confirm('정말로 예매를 취소하시겠습니까?')) return;
             fetch('/ktx/api/cancel', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({ id })
             }).then(r => r.json()).then(data => {
                 if (data.success) {
-                    alert('예약이 취소되었습니다.');
+                    alert('예매가 취소되었습니다.');
                     window.location.reload();
                 } else {
-                    alert(data.message || '예약 취소에 실패했습니다.');
+                    alert(data.message || '예매 취소에 실패했습니다.');
                 }
             });
         }

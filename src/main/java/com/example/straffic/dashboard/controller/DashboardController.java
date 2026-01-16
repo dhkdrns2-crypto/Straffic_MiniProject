@@ -9,6 +9,7 @@ import com.example.straffic.mobility.entity.KtxReservationEntity;
 import com.example.straffic.mobility.repository.KtxReservationRepository;
 import com.example.straffic.board.repository.BoardRepository;
 import com.example.straffic.board.repository.CommentRepository;
+import com.example.straffic.parking.repository.ParkingRecordRepository;
 import com.example.straffic.notice.entity.NoticeEntity;
 import com.example.straffic.notice.repository.NoticeRepository;
 import com.example.straffic.member.entity.MemberEntity;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +40,7 @@ public class DashboardController {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final NoticeRepository noticeRepository;
+    private final ParkingRecordRepository parkingRecordRepository;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final PageViewStatsService pageViewStatsService;
@@ -47,17 +50,8 @@ public class DashboardController {
                             Model model) {
         DailyViewsDTO dailyViews = pageViewStatsService.getTotals();
 
-        WeeklyStatsDTO weeklyStats = new WeeklyStatsDTO(
-                Arrays.asList("월", "화", "수", "목", "금", "토", "일"),
-                Arrays.asList(10, 20, 30, 25, 15, 40, 35),
-                Arrays.asList(8, 18, 25, 20, 12, 35, 30)
-        );
-
-        YearlyStatsDTO yearlyStats = new YearlyStatsDTO(
-                Arrays.asList("1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"),
-                Arrays.asList(100, 120, 90, 140, 160, 180, 200, 190, 170, 150, 130, 110),
-                Arrays.asList(80, 100, 85, 120, 140, 150, 170, 165, 150, 130, 110, 100)
-        );
+        WeeklyStatsDTO weeklyStats = buildWeeklyStats();
+        YearlyStatsDTO yearlyStats = buildYearlyStats();
 
         int ktxPageIndex = Math.max(ktxPage - 1, 0);
         Page<KtxReservationEntity> ktxPageResult = loadKtxReservationsPage(ktxPageIndex);
@@ -126,6 +120,69 @@ public class DashboardController {
         model.addAttribute("todayCounts", todayCounts);
 
         return "security/security";
+    }
+
+    private WeeklyStatsDTO buildWeeklyStats() {
+        LocalDate today = LocalDate.now();
+        int dayOfWeekValue = today.getDayOfWeek().getValue();
+        LocalDate monday = today.minusDays((dayOfWeekValue + 6) % 7);
+        LocalDate mondayPrevWeek = monday.minusWeeks(1);
+
+        List<String> labels = Arrays.asList("월", "화", "수", "목", "금", "토", "일");
+        List<Integer> current = new ArrayList<>();
+        List<Integer> previous = new ArrayList<>();
+
+        for (int i = 0; i < 7; i++) {
+            LocalDate day = monday.plusDays(i);
+            LocalDate prevDay = mondayPrevWeek.plusDays(i);
+            current.add(countTotalActivityForDate(day));
+            previous.add(countTotalActivityForDate(prevDay));
+        }
+
+        return new WeeklyStatsDTO(labels, current, previous);
+    }
+
+    private YearlyStatsDTO buildYearlyStats() {
+        LocalDate today = LocalDate.now();
+        int currentYear = today.getYear();
+        int previousYear = currentYear - 1;
+
+        List<String> labels = Arrays.asList("1월", "2월", "3월", "4월", "5월", "6월",
+                "7월", "8월", "9월", "10월", "11월", "12월");
+        List<Integer> current = new ArrayList<>();
+        List<Integer> previous = new ArrayList<>();
+
+        for (int month = 1; month <= 12; month++) {
+            current.add(countTotalActivityForMonth(currentYear, month));
+            previous.add(countTotalActivityForMonth(previousYear, month));
+        }
+
+        return new YearlyStatsDTO(labels, current, previous);
+    }
+
+    private int countTotalActivityForDate(LocalDate date) {
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.plusDays(1).atStartOfDay();
+        long parking = parkingRecordRepository.countByEntryTimeBetween(start, end);
+        long ktx = ktxReservationRepository.countByReservedAtBetween(start, end);
+        long total = parking + ktx;
+        if (total > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) total;
+    }
+
+    private int countTotalActivityForMonth(int year, int month) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = startDate.plusMonths(1).atStartOfDay();
+        long parking = parkingRecordRepository.countByEntryTimeBetween(start, end);
+        long ktx = ktxReservationRepository.countByReservedAtBetween(start, end);
+        long total = parking + ktx;
+        if (total > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) total;
     }
 
     private Page<KtxReservationEntity> loadKtxReservationsPage(int page) {

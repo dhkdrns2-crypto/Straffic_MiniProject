@@ -55,7 +55,7 @@
     gap: 10px;
 }
 .btList, .btEdit, .btDelete { 
-    padding: 10px 20px; 
+    padding: 10px 24px; 
     border-radius: 6px; 
     text-decoration: none; 
     border: 1px solid #ddd; 
@@ -65,6 +65,9 @@
     align-items: center;
     justify-content: center;
     font-weight: 600;
+    font-size: 0.95rem;
+    min-width: 110px;
+    box-sizing: border-box;
 }
 .btList:hover, .btEdit:hover, .btDelete:hover { background: #f5f5f5; }
 .btDelete { color: #e53935; border-color: #ffcdd2; }
