@@ -91,10 +91,6 @@ public class DashboardController {
                            Model model) {
         int pageIndex = Math.max(page - 1, 0);
         Page<MemberEntity> memberPage = memberService.entitypage(pageIndex);
-        List<MemberEntity> members = memberPage.getContent();
-        List<String> displayIds = members.stream()
-                .map(this::formatMemberId)
-                .collect(Collectors.toList());
         int totalPage = memberPage.getTotalPages();
         if (totalPage == 0) {
             totalPage = 1;
