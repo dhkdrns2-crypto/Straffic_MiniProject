@@ -29,14 +29,15 @@
                 </thead>
                 <tbody>
                 <tr th:each="member : ${list}">
-                    <td th:text="${member.id}">user1</td>
-                    <td th:text="${member.name}">홍길동</td>
-                    <td th:text="${member.tel}">010-1234-5678</td>
-                    <td th:text="${member.role}">ROLE_USER</td>
-                    <td th:text="${member.provider == null ? '일반' : member.provider}">일반</td>
-                    <td th:text="${member.createdAt != null ? #temporals.format(member.createdAt, 'yyyy-MM-dd HH:mm') : '-'}">2024-01-01 10:00</td>
-                    <td>
-                        <form th:action="@{/security/member/role}" method="post" style="display:inline-block; margin-right:4px;">
+                    <td data-label="아이디" th:text="${member.id}">user1</td>
+                    <td data-label="이름" th:text="${member.name}">홍길동</td>
+                    <td data-label="전화번호" th:text="${member.tel}">010-1234-5678</td>
+                    <td data-label="권한" th:text="${member.role}">ROLE_USER</td>
+                    <td data-label="가입경로" th:text="${member.provider == null ? '일반' : member.provider}">일반</td>
+                    <td data-label="가입일" th:text="${member.createdAt != null ? #temporals.format(member.createdAt, 'yyyy-MM-dd HH:mm') : '-'}">2024-01-01 10:00</td>
+                    <td data-label="관리">
+                        <div style="display: flex; justify-content: flex-end; gap: 4px;">
+                        <form th:action="@{/security/member/role}" method="post" style="display:inline-block; margin:0;">
                             <input type="hidden" name="memberId" th:value="${member.id}"/>
                             <input type="hidden" name="role"
                                    th:value="${member.role != null and #strings.contains(member.role,'ADMIN') ? 'ROLE_USER' : 'ROLE_ADMIN'}"/>
@@ -44,12 +45,13 @@
                                 <span th:text="${member.role != null and #strings.contains(member.role,'ADMIN') ? '관리자 해제' : '관리자 부여'}">관리자 부여</span>
                             </button>
                         </form>
-                        <form th:action="@{/security/member/delete}" method="post" style="display:inline-block;">
+                        <form th:action="@{/security/member/delete}" method="post" style="display:inline-block; margin:0;">
                             <input type="hidden" name="memberId" th:value="${member.id}"/>
                             <button type="submit" class="btn-success-modern" style="padding:4px 8px; font-size:12px; background:#e53935;">
                                 삭제
                             </button>
                         </form>
+                        </div>
                     </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(list)}">

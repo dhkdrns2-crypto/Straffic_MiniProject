@@ -54,7 +54,8 @@ public class SecurityConfiguration {
                                 "/oauth2/**",
                                 "/error",
                                         "/image/**", "/css/**", "/js/**",
-                                        "/mypage", "/mypage/**"
+                                        "/mypage", "/mypage/**",
+                                        "/favicon.ico"
                         ).permitAll()
                         .requestMatchers("/notice/list", "/notice/view/**", "/notice/image/**").permitAll()
                         .requestMatchers("/board/list", "/board/view/**", "/board/image/**").permitAll()
@@ -68,7 +69,7 @@ public class SecurityConfiguration {
                         .loginProcessingUrl("/loginProcess")
                         .usernameParameter("id")
                         .passwordParameter("pw")
-                        .defaultSuccessUrl("/", false)
+                        .defaultSuccessUrl("/", true)
                         .failureHandler(new AuthenticationFailureHandler() {
                             @Override
                             public void onAuthenticationFailure(HttpServletRequest request,
@@ -82,6 +83,7 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService)
                         )
