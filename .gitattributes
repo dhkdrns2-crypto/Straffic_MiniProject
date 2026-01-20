@@ -13,7 +13,3 @@
 # XML files
 *.xml text
 *.properties text
-
-# Exclude CSS/HTML from language statistics
-*.css linguist-vendored
-*.html linguist-vendored
