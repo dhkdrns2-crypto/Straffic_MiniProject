@@ -9,7 +9,17 @@ import os
 import re
 import io
 import sys
+import ssl
 from datetime import datetime
+
+# SSL 인증서 검증 비활성화 (EasyOCR 모델 다운로드 문제 해결)
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
