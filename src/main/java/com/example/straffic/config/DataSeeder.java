@@ -126,7 +126,7 @@ public class DataSeeder implements CommandLineRunner {
         int r = random.nextInt(100);
         if (r < 25) return "PARKING";
         if (r < 50) return "KTX";
-        if (r < 75) return "BIKE";
+        if (r < 75) return "WAYFINDING";
         return "SUBWAY";
     }
 

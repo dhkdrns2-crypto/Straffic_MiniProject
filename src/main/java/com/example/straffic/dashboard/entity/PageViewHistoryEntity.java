@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "page_view_history")
+@Table(name = "PAGE_VIEW_HISTORY")
 @Data
 @NoArgsConstructor
 public class PageViewHistoryEntity {

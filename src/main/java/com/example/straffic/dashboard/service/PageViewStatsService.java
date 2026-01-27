@@ -42,7 +42,7 @@ public class PageViewStatsService {
     public DailyViewsDTO getTotals() {
         long parking = getTotalViews("PARKING");
         long ktx = getTotalViews("KTX");
-        long bike = getTotalViews("BIKE");
+        long bike = getTotalViews("WAYFINDING");
         long subway = getTotalViews("SUBWAY");
         return new DailyViewsDTO(
                 (int) parking,

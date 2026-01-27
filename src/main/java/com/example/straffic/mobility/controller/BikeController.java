@@ -18,11 +18,11 @@ public class BikeController {
     @Value("${kakao.js.key:}")
     private String kakaoJsKey;
 
-    @GetMapping("/bike")
+    @GetMapping("/wayfinding")
     public String bikeMain(Model model) {
-        pageViewStatsService.increaseView("BIKE");
-        model.addAttribute("pageTitle", "공유 모빌리티");
+        pageViewStatsService.increaseView("WAYFINDING");
+        model.addAttribute("pageTitle", "길찾기");
         model.addAttribute("kakaoKey", kakaoJsKey);
-        return "mobility/bike";
+        return "mobility/route";
     }
 }

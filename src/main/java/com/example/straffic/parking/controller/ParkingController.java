@@ -27,9 +27,9 @@ public class ParkingController {
     @GetMapping("/parking/output")
     public String parkingOutput(Model model) {
         pageViewStatsService.increaseView("PARKING");
-        model.addAttribute("pageTitle", "주차장 요금");
+        model.addAttribute("pageTitle", "주차 관리");
         model.addAttribute("spots", getSpots());
-        return "parking/output";
+        return "parking/dashboard";
     }
 
     @PostMapping("/parking/output")
@@ -66,7 +66,7 @@ public class ParkingController {
         record.setFee(fee);
         parkingRecordRepository.save(record);
 
-        model.addAttribute("pageTitle", "주차장 요금");
+        model.addAttribute("pageTitle", "주차 관리");
         model.addAttribute("spots", getSpots());
         model.addAttribute("carNumber", carNumber);
         model.addAttribute("carType", carType);
@@ -103,7 +103,7 @@ public class ParkingController {
     }
 
     private List<String> getSpots() {
-        return Arrays.asList("A-1", "A-2", "A-3", "A-4", "A-5");
+        return Arrays.asList("A-1", "A-2", "A-3", "A-4", "A-5", "A-6", "A-7", "A-8", "A-9", "A-10");
     }
 }
 

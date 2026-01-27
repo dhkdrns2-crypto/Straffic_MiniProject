@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "page_view_stats")
+@Table(name = "PAGE_VIEW_STATS")
 @Data
 @NoArgsConstructor
 public class PageViewStatsEntity {

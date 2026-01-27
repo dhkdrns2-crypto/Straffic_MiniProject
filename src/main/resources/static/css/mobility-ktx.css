@@ -11,16 +11,16 @@
 
 .ktx-page {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     transition: max-width 0.3s ease;
 }
 
 .ktx-container {
-    width: 100%;
+    width: 94%;
     background: #fff;
     padding: 40px;
-    border-radius: 12px;
+    border-radius: 0;
     border: 1px solid var(--border-color);
     box-sizing: border-box;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
@@ -46,7 +46,7 @@
 .station-select, .form-input, .form-select {
     width: 100%;
     padding: 10px 12px;
-    border-radius: 6px;
+    border-radius: 0;
     border: 1px solid #ccc;
     font-size: 15px;
 }
@@ -54,7 +54,7 @@
 /* KTX 예매 공통 버튼에 블루 계열 적용 */
 .btn {
     padding: 12px 20px;
-    border-radius: 6px;
+    border-radius: 0;
     border: none;
     cursor: pointer;
     font-weight: 600;
@@ -67,7 +67,7 @@
 
 .train-card {
     border: 1px solid #eee;
-    border-radius: 12px;
+    border-radius: 0;
     padding: 20px;
     margin-top: 15px;
     display: grid;
@@ -113,7 +113,7 @@
     background: #fff;
     width: 100%;
     max-width: 420px;
-    border-radius: 12px;
+    border-radius: 0;
     padding: 20px 20px 24px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     box-sizing: border-box;
@@ -152,7 +152,7 @@
 }
 
 .seat-item {
-    border-radius: 6px;
+    border-radius: 0;
     border: 1px solid #ddd;
     padding: 8px 0;
     text-align: center;

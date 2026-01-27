@@ -96,7 +96,7 @@ public class DashboardController {
 
         int parking = (int) pageViewHistoryRepository.countByPageNameAndViewedAtBetween("PARKING", start, end);
         int ktx = (int) pageViewHistoryRepository.countByPageNameAndViewedAtBetween("KTX", start, end);
-        int bike = (int) pageViewHistoryRepository.countByPageNameAndViewedAtBetween("BIKE", start, end);
+        int bike = (int) pageViewHistoryRepository.countByPageNameAndViewedAtBetween("WAYFINDING", start, end);
         int subway = (int) pageViewHistoryRepository.countByPageNameAndViewedAtBetween("SUBWAY", start, end);
 
         return new DailyViewsDTO(parking, ktx, bike, subway);
@@ -196,14 +196,14 @@ public class DashboardController {
         if ("ALL".equals(platform)) {
             long parking = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("PARKING", start, end);
             long ktx = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("KTX", start, end);
-            long bike = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("BIKE", start, end);
+            long bike = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("WAYFINDING", start, end);
             total = parking + ktx + bike;
         } else if ("PARKING".equals(platform)) {
             total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("PARKING", start, end);
         } else if ("KTX".equals(platform)) {
             total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("KTX", start, end);
-        } else if ("BIKE".equals(platform)) {
-            total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("BIKE", start, end);
+        } else if ("WAYFINDING".equals(platform)) {
+            total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("WAYFINDING", start, end);
         } else if ("SUBWAY".equals(platform)) {
              total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("SUBWAY", start, end);
         }
@@ -223,14 +223,14 @@ public class DashboardController {
         if ("ALL".equals(platform)) {
             long parking = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("PARKING", start, end);
             long ktx = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("KTX", start, end);
-            long bike = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("BIKE", start, end);
+            long bike = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("WAYFINDING", start, end);
             total = parking + ktx + bike;
         } else if ("PARKING".equals(platform)) {
             total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("PARKING", start, end);
         } else if ("KTX".equals(platform)) {
             total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("KTX", start, end);
-        } else if ("BIKE".equals(platform)) {
-            total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("BIKE", start, end);
+        } else if ("WAYFINDING".equals(platform)) {
+            total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("WAYFINDING", start, end);
         } else if ("SUBWAY".equals(platform)) {
             total = pageViewHistoryRepository.countByPageNameAndViewedAtBetween("SUBWAY", start, end);
         }
@@ -299,7 +299,7 @@ public class DashboardController {
 
     @GetMapping("/mobility/bike")
     public String mobility2() {
-        return "redirect:/bike";
+        return "redirect:/wayfinding";
     }
 
     @GetMapping("/dashboard/security/again")
